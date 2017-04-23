@@ -1,0 +1,131 @@
+ <summary>
+# quatrieme séance
+# <summary>
+#
+import matplotlib.pylab as plt
+
+
+def fA(k1, a, ea, b, eb):
+    return - k1 * a**ea * b**eb
+
+
+def fB(k1, a, k2, b):
+    return k1 * a - k2 * b
+
+
+def rk4(Ai, Bi, Ci, k1, k2, Dt, t0, eA, eB):
+
+    ti = t0
+    i = 0
+    #stocker des valeurs initial
+    a0, b0, c0 = Ai, Bi, C0
+    bmax = 0
+    tbmax = 0
+
+    while 1:
+        print('t%3.f =  %3.3f s -- [A]%3.f = %3.9f mol/L -- [B]%3.f = %3.9f mol/L -- [C]%3.f  = %3.9f mol/L' % (i, ti, i, Ai, i, Bi, i, Ci))
+
+        # Sauvegarder les valeurs de t, [A], [B] et [C]
+        lt.append(ti)
+        lA.append(Ai)
+        lB.append(Bi)
+        lC.append(Ci)
+
+
+        # calculation des quantités intermidiaires pour A
+        AS1 = Dt * fA(-k1, Ai,eA, Bi, eB)
+        AS2 = Dt * fA(-k1, Ai + 1 / 2 * AS1, eA, Bi + 1 / 2 * AS2, eB)
+        AS3 = Dt * fA(-k1, Ai + 1 / 2 * AS2, eA, Bi + 1 / 2 * AS3, eB)
+        AS4 = Dt * fA(-k1, Ai + AS3, eA, Bi + AS4, eB)
+
+        # calculation des quantités intermidiaires pour A
+        CS1 = Dt * fA(k1, Ai, eA, Bi, eB)
+        CS2 = Dt * fA(k1, Ai + 1 / 2 * CS1, eA, Bi + 1 / 2 * CS2, eB)
+        CS3 = Dt * fA(k1, Ai + 1 / 2 * CS2, eA, Bi + 1 / 2 * CS3, eB)
+        CS4 = Dt * fA(k1, Ai + CS3, eA, Bi + CS4, eB)
+
+
+        # Claculation de [A]i+1, [B]i+1 et [C]i+1 en utilisant les meme variable Ai, Bi et Ci
+        A = Ai
+        Ai = Ai + 1 / 6 * (AS1 + 2 * AS2 + 2 * AS3 + AS4)
+        Bi = Bi + 1 / 6 * (AS1 + 2 * AS2 + 2 * AS3 + AS4)
+        Ci = Ci + 1 / 6 * (CS1 + 2 * CS2 + 2 * CS3 + CS4)
+
+
+
+         #Arrette  de RK4 de i
+        if Ai - A == 10**-8:
+            print('le temps tbmax =', tbmax)
+            break
+
+        # incrementation de i
+        i = i + 1
+        ti = t0 + i * Dt
+
+
+# ici lister sera represanter par la liste de ti
+# et listeC par liste des con
+def ecriture_fichier(fichier, listet, listeC, c):
+
+    # ouvrir le fichier
+    f = open(fichier, 'w')
+
+    for index in range(len(listeC)):
+        # ecrire dans le fichier
+        f.write('t%3.f =  %3.3f s -- [%s]%3.f = %3.9f mol.L-1 \n' % (index, lt[index], c, index, listeC[index]))
+
+    # fermer le fichier
+    f.close()
+    return f
+
+
+def visuel(listt, listC, label):
+    plt.plot(listt, listC, 'r-', label=label)
+    plt.show()
+    plt.save()
+
+
+#
+#
+#
+# le programme principal
+#
+#
+#
+#
+# fixation des valeurs :
+
+
+t0, Dt = 0, 0.05
+
+# Declaration de list
+
+lt = []
+lA = []
+lB = []
+lC = []
+
+#le choix de l'utilisateur
+print('pour une equqtione de type aA + bB = cC \n entrer a, b et c 
+meme si ils sont eguale a 1')
+eA = float(input('Choisir la valeur de a:  '))
+A0 = float(input('Choisir la valeur de [A]0:  '))
+eB = float(input('Choisir la valeur de b:  '))
+B0 =float(input('Choisir la valeur de [B]0:  '))
+eC = float(input('Choisir la valeur de c:  '))
+C0 = float(input('Choisir la valeur de [C]0:  '))
+
+K1 = float(input('Choisir la valeur de [K]1:  '))
+K2 = float(input('Choisir la valeur de [K]2:  '))
+
+# boucle RK4
+rk4(A0, B0, C0, K1, K2, Dt, t0, eA, eB)
+
+# ouvrir le fichier
+ecriture_fichier('DATA_A.txt', lt, lA, 'A')
+ecriture_fichier('DATA_B.txt', lt, lB, 'B')
+ecriture_fichier('DATA_C.txt', lt, lC, 'C')
+
+visuel(lt, lA,'[A](t)')
+visuel(lt, lB,'[B](t)')
+visuel(lt, lC,'[C](t)')
