@@ -21,7 +21,10 @@ def rk4(Ai, Bi, Ci, k1, k2, Dt, t0):
     bmax = 0
     tbmax = 0
 
-    while 1:
+    # le variable tmax contient le temps maximum 
+    tmax = 100
+
+    while ti <= tmax::
         print('t%3.f =  %3.3f s -- [A]%3.f = %3.9f mol/L -- [B]%3.f = 
 %3.9f mol/L -- [C]%3.f  = %3.9f mol/L' % (i, ti, i, Ai, i, Bi, i, Ci))
 
