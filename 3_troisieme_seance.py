@@ -33,7 +33,10 @@ fichier = open('data.txt', 'w')
 
 
 # boucle RK4
-while 1:
+    # le variable tmax contient le temps maximum 
+    tmax = 100
+
+    while ti <= tmax:
     print('t0 =  %3.3f s -- [A]%3.f = %3.3f mol/L -- [B]%3.f = %3.3f mol/L -- [C]%3.f  = %3.3f mol/L' %(ti, i, Ai, i, Bi, i, Ci ))
 
     #Sauvegarder les valeurs de t, [A], [B] et [C]
